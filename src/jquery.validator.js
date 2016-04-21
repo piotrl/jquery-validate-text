@@ -117,7 +117,7 @@
             if (/^[a-zA-Z\d\-_.,\s]+$/.test(text)) {
                 errors.push("Password must contain special characters");
             }
-            if (/[A-Z]+$/.test(text)) {
+            if (!/[A-Z]+$/.test(text)) {
                 errors.push("Password must contain upper case letter");
             }
 
@@ -127,19 +127,6 @@
             };
         }
 
-        function errorHanding($input, isValid, errors) {
-            $input.parent().toggleClass(
-                settings.ERROR_CLASS, !isValid
-            );
-            if (errors && errors.length) {
-                console.log(errors);
-            }
-
-            $input.closest("form")
-                .find('button[type="submit"]')
-                .prop("disabled", !isValid);
-        }
-
         function validateEmail(text) {
             return validatePattern(text, settings.EMAIL_REGEX);
         }
@@ -147,6 +134,33 @@
         function validatePattern(text, pattern) {
             pattern = pattern || settings.options.pattern;
             return pattern.test(text);
+        }
+
+        function errorHanding($input, isValid, errors) {
+            $input.parent().toggleClass(
+                settings.ERROR_CLASS, !isValid
+            );
+
+            var $errorList = $(settings.options.errors);
+            $errorList.find('ul').remove();
+            if (errors && errors.length) {
+                var $errors = buildErrorsDOM(errors);
+
+                $errorList.append($errors);
+            }
+
+            $input.closest("form")
+                .find('button[type="submit"]')
+                .prop("disabled", !isValid);
+        }
+
+        function buildErrorsDOM(errors) {
+            var $errors = '<ul>';
+            errors.forEach(function (error) {
+                $errors += '<li>' + error + '</li>';
+            });
+            $errors += '</ul>';
+            return $errors;
         }
     };
 }(jQuery));

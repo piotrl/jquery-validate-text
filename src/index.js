@@ -15,11 +15,13 @@
         });
 
         $('#password').validateText({
-            password: true
+            password: true,
+            errors: '.error-list'
         });
 
         $('#passwordEntropy').validateText({
-            passwordEntropy: true
+            passwordEntropy: true,
+            errors: '.error-list'
         });
     });
 })(jQuery);
