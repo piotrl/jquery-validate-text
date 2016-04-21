@@ -16,12 +16,15 @@
 
         $('#password').validateText({
             password: true,
-            errors: '.error-list'
+            errors: '.error-list',
+            refresh: 'keyup'
         });
 
         $('#passwordEntropy').validateText({
             passwordEntropy: true,
-            errors: '.error-list'
+            errors: '.error-list',
+            entropy: 35,
+            refresh: 'keyup'
         });
     });
 })(jQuery);

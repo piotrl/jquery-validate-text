@@ -99,32 +99,80 @@
                 isValid = validateEmail(text);
             }
             if (isValid && settings.options.password) {
-                var valid = validatePassword(text);
+                let valid = validatePassword(text);
                 isValid = valid.isValid;
                 errors = valid.errors;
             }
+            if (isValid && settings.options.passwordEntropy) {
+                let valid = validatePasswordEntropy(text);
+                isValid = valid.isValid;
+                errors = valid.errors;
+            }
+
             errorHanding($input, isValid, errors);
+        }
+        
+        function validatePasswordEntropy(text) {
+            var n = 0;
+            if (containsNumber(text)) {
+                n += 10;
+            }
+            if (containsSpecialCharacters(text)) {
+                n += 15;
+            }
+            if (containsUpperCharacters(text)) {
+                n += 26;
+            }
+            if (containsLowerCharacters(text)) {
+                n += 26;
+            }
+
+            var entropy_character = Math.log2(n);
+            var entropy = text.length * entropy_character;
+            return {
+                isValid: entropy > settings.options.entropy,
+                errors: ["Entropy: " + entropy.toFixed(2)]
+            };
         }
 
         function validatePassword(text) {
             var errors = [];
-            if (!/[\d]+/.test(text)) {
+            if (!containsNumber(text)) {
                 errors.push("Password must contain number");
             }
             if (text.length < 5) {
                 errors.push("Password must have more characters than 5");
             }
-            if (/^[a-zA-Z\d\-_.,\s]+$/.test(text)) {
+            if (!containsSpecialCharacters(text)) {
                 errors.push("Password must contain special characters");
             }
-            if (!/[A-Z]+$/.test(text)) {
+            if (!containsUpperCharacters(text)) {
                 errors.push("Password must contain upper case letter");
+            }
+            if (!containsLowerCharacters(text)) {
+                errors.push("Password must contain lower case letter");
             }
 
             return {
                 errors: errors,
                 isValid: errors.length === 0
             };
+        }
+
+        function containsNumber(text) {
+            return /[\d]+/.test(text);
+        }
+
+        function containsSpecialCharacters(text) {
+            return !/^[a-zA-Z\d\-_.,\s]+$/.test(text);
+        }
+
+        function containsUpperCharacters(text) {
+            return /[A-Z]+$/.test(text);
+        }
+
+        function containsLowerCharacters(text) {
+            return /[a-z]+$/.test(text);
         }
 
         function validateEmail(text) {
