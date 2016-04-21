@@ -24,15 +24,28 @@
         if (settings.options.pattern) {
             validatePattern(text, $el);
         }
+        if (settings.options.email) {
+            validateEmail(text, $el);
+        }
     }
 
-    function validatePattern(text, $el) {
+    function validateEmail(text, $el) {
+        validatePattern(text, $el, settings.EMAIL_REGEX);
+    }
+
+    function validatePattern(text, $el, pattern) {
+        pattern = pattern || settings.options.pattern;
+
         $el.parent().toggleClass(
-            settings.ERROR_CLASS, !settings.options.pattern.test(text)
+            settings.ERROR_CLASS, !pattern.test(text)
         );
     }
 }(jQuery));
 
 $('#email').validateText({
     pattern: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłóńśźż]*$/
+});
+
+$('#name').validateText({
+    email: true
 });
