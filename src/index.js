@@ -13,5 +13,13 @@
             zipcode: true,
             city: '#city'
         });
+
+        $('#password').validateText({
+            password: true
+        });
+
+        $('#passwordEntropy').validateText({
+            passwordEntropy: true
+        });
     });
 })(jQuery);
