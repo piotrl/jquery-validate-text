@@ -11,7 +11,8 @@
 
         $('#zipcode').validateText({
             zipcode: true,
-            city: '#city'
+            city: '#city',
+            refresh: 'keyup'
         });
 
         $('#password').validateText({
