@@ -89,9 +89,6 @@
             var isValid = true;
             var errors;
 
-            if (!text) {
-                return;
-            }
             if (isValid && settings.options.pattern) {
                 isValid = validatePattern(text);
             }
